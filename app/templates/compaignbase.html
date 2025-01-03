@@ -1,0 +1,786 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}nyxmedia/payments Admin{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="http://placehold.it/64.png/000/fff">
+    <link rel="apple-touch-icon" sizes="144x144" href="http://placehold.it/144.png/000/fff">
+    <link rel="apple-touch-icon" sizes="114x114" href="http://placehold.it/114.png/000/fff">
+    <link rel="apple-touch-icon" sizes="72x72" href="http://placehold.it/72.png/000/fff">
+    <link rel="apple-touch-icon" sizes="57x57" href="http://placehold.it/57.png/000/fff">
+
+    <!-- CSS -->
+    <link href="/static/css/lib/themify-icons.css" rel="stylesheet">
+    <link href="/static/css/lib/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/lib/menubar/sidebar.css" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/lib/Unix.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+     <style>
+        #loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #loading-overlay img {
+            width: 150px;
+            height: auto;
+        }
+        .custom-modal .modal-body {
+            max-height: 600px; /* Adjust this value to fit your needs */
+            overflow-y: auto;  /* Enable vertical scrolling if content overflows */
+        }
+
+        
+    </style>
+    {{ ckeditor.load() }}
+    <!-- Additional CSS specific to the child template -->
+    {% block additional_css %}{% endblock %}
+</head>
+
+<body class="sidebar-hide" style="background-color: {{ color }};">
+    <!-- Add this to your body -->
+    <div id="loading-overlay">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Loading...">
+    </div>
+
+    <div class="content-wrap">
+        <div class="main">
+            <div class="container-fluid">
+                <div>
+                    {% if courses %}
+    {% for course in courses %}
+        {% if course.id == active_compaign_id %}
+            <a href="{{ url_for('courses.dashboard', course=course.id) }}" class="btn btn-primary">{{ course.name }}</a>
+        {% else %}
+            <a href="{{ url_for('courses.dashboard', course=course.id) }}" class="btn btn-success">{{ course.name }}</a>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+
+
+
+                </div>
+                <div> {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}</div>
+                
+                <div class="row">
+                    <div class="col-lg-8 p-r-0 title-margin-right">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h1> <a href="{{url_for('users.dashboard')}}"> Dashboard</a></h1>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /# column -->
+                    <div class="col-lg-4 p-l-0 title-margin-left">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <ol class="breadcrumb text-right">
+                                    <a class="btn btn-primary" href="#" onclick="confirmDelete(event, '{{ url_for('courses.delete_campaign', campaign=compaign_id) }}')">Delete Campaign</a>
+
+
+
+                                     <a class="btn btn-primary" href="#emailmodal"  data-toggle="modal">Compose Email</a>
+                                   <a class="btn btn-primary" href="#compaignmodal"  data-toggle="modal">Add Item</a>
+                                    <a href="{{ url_for('auth.logout') }}">Log Out</a>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /# column -->
+                </div>
+                <!-- /# row -->
+                <div class="main-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card alert">
+                                <div class="card-body">
+                                    <div class="compose-email">
+                                        <div class="mail-box">
+    <aside class="sm-side">
+        <div class="user-head">
+
+            <div >
+                <h5><a class="text-white" href="#">Admin</a></h5>
+                <span><a href="#">{{ email }}</a></span>
+                {{ this_campaign.type }}
+            </div>
+        </div>
+        <div class="inbox-body text-center">
+            {% if this_campaign.type == 1%}
+            {% if this_campaign.price is none and this_campaign.openai_key is none  %}
+            <p class="text-white">Kindly Configure Your Open API Key to conposes email template</p>
+
+            {% else %}
+            <a href="#myModal" data-toggle="modal" title="Compose" class="btn btn-compose"> Compose</a>
+            <!-- Modal -->
+            {% endif %}
+            {% endif %}
+            <div aria-hidden="true" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content text-left">
+                        <div class="modal-header">
+                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button"><i class="ti-close"></i></button>
+                            <h4 class="modal-title">Create email Template</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="generate-email-form" action="{{ url_for('courses.generate_all_emails', course=compaign_id) }}" method="POST">
+    {{ formu.hidden_tag() }} <!-- CSRF token field -->
+    
+    <div class="form-group">
+        {{ formu.Header.label(class="col-lg-2 control-label") }}
+        <div class="col-lg-10">
+            {{ formu.Header(class="form-control", placeholder="") }}
+            {% for error in formu.Header.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="form-group">
+        {{ formu.body.label(class="col-lg-2 control-label") }}
+        <div class="col-lg-10">
+            {{ formu.body(class="form-control", rows="10", cols="30") }}
+            {% for error in formu.body.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="form-group">
+        {{ formu.footer.label(class="col-lg-2 control-label") }}
+        <div class="col-lg-10">
+            {{ formu.footer(class="form-control", placeholder="") }}
+            {% for error in formu.footer.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Generate Emails</button>
+</form>
+
+<div id="status-message" class="alert alert-info" style="display: none;"></div>
+
+
+<div id="status-message" class="alert alert-info" style="display: none;"></div>
+
+                        </div>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+            <!-- config modal -->
+            <div aria-hidden="true" role="dialog" tabindex="-1" id="configmodal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content text-left">
+                        <div class="modal-header">
+                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button"><i class="ti-close"></i></button>
+                            <h4 class="modal-title">Configuration Details</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url_for('courses.config', id=compaign_id) }}" method="POST">
+                                {{ keyform.hidden_tag() }} <!-- Add CSRF token field for security -->
+                               <div class="form-group">
+                                {{ keyform.key.label(class="col-lg-2 control-label") }}
+                                <div class="col-lg-10">
+                                    {{ keyform.key(class="form-control", placeholder="", value=this_campaign.stripe_api_key if this_campaign.stripe_api_key is not none else '') }}
+                                    {% for error in keyform.key.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{ keyform.product_id.label(class="col-lg-2 control-label") }}
+                                    <div class="col-lg-10">
+                                        {{ keyform.product_id(class="form-control", placeholder="" , value=this_campaign.product_id if this_campaign.product_id is not none else '') }}
+                                        {% for error in keyform.product_id.errors %}
+                                            <span class="text-danger">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    {{ keyform.endpoint_secret.label(class="col-lg-2 control-label") }}
+                                    <div class="col-lg-10">
+                                        {{ keyform.endpoint_secret(class="form-control", placeholder="", value=this_campaign.endpoint_secret if this_campaign.endpoint_secret is not none else '') }}
+                                        {% for error in keyform.endpoint_secret.errors %}
+                                            <span class="text-danger">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% if this_campaign.type == 1%}
+                                <div class="form-group">
+                                    {{ keyform.openai_key.label(class="col-lg-2 control-label") }}
+                                    <div class="col-lg-10">
+                                        {{ keyform.openai_key(class="form-control", placeholder="", value=this_campaign.openai_key if this_campaign.openai_key is not none else '') }}
+                                        {% for error in keyform.openai_key.errors %}
+                                            <span class="text-danger">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                <button type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Submit</button>
+                            </form>
+                        </div>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- config modal -->
+            <!-- start of resource -->
+            <div aria-hidden="true" role="dialog" tabindex="-1" id="resource" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content text-left">
+                        <div class="modal-header">
+                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button"><i class="ti-close"></i></button>
+                            <h4 class="modal-title">Resources in Registration Page</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url_for('courses.resources', campaign=compaign_id) }}" method="POST" enctype="multipart/form-data">
+                            {{ ResourcesForm.hidden_tag() }} <!-- Add CSRF token field for security -->
+                            <div class="form-group">
+                                {{ ResourcesForm.title.label(class="col-lg-2 control-label") }}
+                                <div class="col-lg-10">
+                                    {{ ResourcesForm.title(class="form-control", placeholder="") }}
+                                    {% for error in ResourcesForm.title.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ ResourcesForm.course_description.label(class="col-lg-2 control-label") }}
+                                <div class="col-lg-10">
+                                    {{ ResourcesForm.course_description(class="form-control", placeholder="") }}
+                                    {% for error in ResourcesForm.course_description.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ ResourcesForm.position.label(class="col-lg-2 control-label") }}
+                                <div class="col-lg-10">
+                                    {{ ResourcesForm.position(class="form-control", placeholder="") }}
+                                    {% for error in ResourcesForm.position.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ ResourcesForm.advert.label(class="col-lg-2 control-label") }}
+                                <div class="col-lg-10">
+                                    {{ ResourcesForm.advert(class="form-control", placeholder="") }}
+                                    {% for error in ResourcesForm.advert.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            
+                            <button type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Submit</button>
+                        </form>
+
+                        </div>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- End Resource-->
+            <!-- start Customize -->
+            <div aria-hidden="true" role="dialog" tabindex="-1" id="customize" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content text-left">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button"><i class="ti-close"></i></button>
+                <h4 class="modal-title">Customize Login Page</h4>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('courses.customize', campaign=compaign_id) }}" method="POST" enctype="multipart/form-data">
+                    {{ customizeform.hidden_tag() }} <!-- Add CSRF token field for security -->
+                    
+                    <!-- Title Input -->
+                    <div class="form-group">
+                        {{ customizeform.title.label(class="col-lg-2 control-label") }}
+                        <div class="col-lg-10">
+                            {{ customizeform.title(class="form-control", placeholder="", value=this_campaign.title if this_campaign.title is not none else '') }}
+                            {% for error in customizeform.title.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- Color Input -->
+                    <div class="form-group">
+                        {{ customizeform.color.label(class="col-lg-2 control-label") }}
+                        <div class="col-lg-10">
+                            {{ customizeform.color(class="form-control", placeholder="", value=this_campaign.color if this_campaign.color is not none else '') }}
+                            {% for error in customizeform.color.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+    {{ customizeform.free.label(class="col-lg-2 control-label") }}
+    <p>Free status: {{ this_campaign.free }}</p>
+    <div class="col-lg-10">
+        <!-- Conditionally set the "checked" attribute directly on the checkbox -->
+        {{ customizeform.free(checked=this_campaign.free) }}
+        
+        {% for error in customizeform.free.errors %}
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+                            <div class="form-group">
+                                {{ customizeform.price.label(class="col-lg-2 control-label") }}
+                                <div class="col-lg-10">
+                                    {{ customizeform.price(class="form-control", placeholder="", value=this_campaign.price if this_campaign.price is not none else '') }}
+                                    {% for error in customizeform.price.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                {{ customizeform.currency.label(class="col-lg-2 control-label") }}
+                                <div class="col-lg-10">
+                                    {{ customizeform.currency(class="form-control", placeholder="", value=this_campaign.currency) }}
+                                    {% for error in customizeform.currency.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        
+                            {% if this_campaign.type != 1 %}
+                            <div class="form-group">
+                                {{ customizeform.link.label(class="col-lg-2 control-label") }}
+                                <div class="col-lg-10">
+                                    {{ customizeform.link(class="form-control", placeholder="", value=this_campaign.courselink if this_campaign.courselink is not none else '') }}
+                                    {% for error in customizeform.link.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                    <!-- Submit Button -->
+                    <div class="form-group">
+                        <div class="col-lg-10 col-lg-offset-2">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    function confirmDelete(event, url) {
+        // Prevent the default link action
+        event.preventDefault();
+
+        // Display the confirmation dialog
+        if (confirm("Are you sure you want to delete this campaign?")) {
+            // Redirect to the delete URL if the user confirms
+            window.location.href = url;
+        }
+    }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("generate-email-form");
+        const statusMessage = document.getElementById("status-message");
+        const emailStatusDiv = document.getElementById("email-status");
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(form);
+            const url = form.getAttribute("action");
+
+            // Show loading message
+            statusMessage.style.display = "block";
+            statusMessage.innerText = "Submitting form, please wait...";
+
+            fetch(url, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest" // Identify this request as AJAX
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw response.json(); // Throw error JSON if response is not OK
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle successful form submission
+                if (data.message) {
+                    statusMessage.classList.remove("alert-danger");
+                    statusMessage.classList.add("alert-success");
+                    statusMessage.innerText = data.message;
+
+                    // Start polling for email generation status
+                    const templateId = data.template_id; // Assuming the server returns the template ID
+                    pollEmailGenerationStatus(templateId);
+                }
+            })
+            .catch(async (error) => {
+                const errorDetails = await error;
+                console.error("Error submitting form:", errorDetails);
+                statusMessage.classList.remove("alert-success");
+                statusMessage.classList.add("alert-danger");
+                statusMessage.innerText = "An error occurred while submitting the form.";
+
+                // Display field errors if available
+                if (errorDetails.errors) {
+                    for (const [field, messages] of Object.entries(errorDetails.errors)) {
+                        console.error(`${field}: ${messages.join(", ")}`);
+                    }
+                }
+            });
+        });
+
+        // Function to poll email generation status
+        function pollEmailGenerationStatus(templateId) {
+            emailStatusDiv.style.display = "block";
+            emailStatusDiv.innerText = "Generating emails, please wait...";
+
+            function checkStatus() {
+                fetch(`/compaign/generate_all_emails_status/${templateId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status === "in-progress") {
+                            emailStatusDiv.innerText = "Generating emails, please wait...";
+                        } else if (data.status === "completed") {
+                            emailStatusDiv.innerText = "Email generation completed!";
+                            setTimeout(() => {
+                                emailStatusDiv.style.display = "none";
+                            }, 5000); // Hide after 5 seconds
+                        } else if (data.status === "failed") {
+                            emailStatusDiv.innerText = `Email generation failed: ${data.error}`;
+                        } else {
+                            emailStatusDiv.innerText = "Error fetching status.";
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Error fetching email generation status:", err);
+                        emailStatusDiv.innerText = "Error fetching email generation status.";
+                    });
+            }
+
+            // Poll the status every 5 seconds
+            const intervalId = setInterval(() => {
+                checkStatus();
+
+                // Stop polling if completed or failed
+                if (emailStatusDiv.innerText.includes("completed") || emailStatusDiv.innerText.includes("failed")) {
+                    clearInterval(intervalId);
+                }
+            }, 5000);
+        }
+    });
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var freeCheckbox = document.querySelector('input[name="free"]');  // The "free" checkbox
+        var priceInput = document.getElementById('price');  // The price input field
+
+        // Function to update the price based on the checkbox status
+        function updatePrice() {
+            if (freeCheckbox.checked) {
+                // If checked, set price to 0.0 and make it readonly
+                priceInput.value = '0.0';
+                priceInput.setAttribute('readonly', true);
+            } else {
+                // If unchecked, set price to the default from the database and make it editable
+                priceInput.value = '{{ this_campaign.price }}';
+                priceInput.removeAttribute('readonly');
+            }
+        }
+
+        // Initialize the price based on the initial checkbox state
+        updatePrice();
+
+        // Add event listener to update price when the checkbox is toggled
+        freeCheckbox.addEventListener('change', updatePrice);
+    });
+</script>
+
+            <!-- end Customize -->
+            <!-- add Compaign -->
+            <div aria-hidden="true" role="dialog" tabindex="-1" id="compaignmodal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content text-left">
+                        <div class="modal-header">
+                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button"><i class="ti-close"></i></button>
+                            <h4 class="modal-title">Add Item</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url_for('users.addcourse') }}" method="POST">
+                                {{ compainform.hidden_tag() }} <!-- Add CSRF token field for security -->
+                                <div class="form-group">
+
+                                    {{ compainform.type.label(class="col-lg-2 control-label") }}
+                                    <div class="col-lg-10">
+                                        {{ compainform.type(class="form-control", placeholder="") }}
+                                        {% for error in compainform.type.errors %}
+                                            <span class="text-danger">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                    {{ compainform.name.label(class="col-lg-2 control-label") }}
+                                    <div class="col-lg-10">
+                                        {{ compainform.name(class="form-control", placeholder="") }}
+                                        {% for error in compainform.name.errors %}
+                                            <span class="text-danger">{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Submit</button>
+                            </form>
+                        </div>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- end adding Compaign -->
+            <!-- Compose Email -->
+            <div aria-hidden="true" role="dialog" tabindex="-1" id="emailmodal" class="modal fade">
+    <div class="modal-dialog custom-modal">
+        <div class="modal-content text-left">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button"><i class="ti-close"></i></button>
+                <h4 class="modal-title">Add Item</h4>
+            </div>
+            <div class="modal-body">
+    <form action="{{ url_for('courses.sendemail', compaign=compaign_id) }}" method="POST" enctype="multipart/form-data">
+        {{ emailform.hidden_tag() }} <!-- Add CSRF token field for security -->
+        <div class="form-group">
+            {{ emailform.subject.label(class="col-lg-2 control-label") }}
+            <div class="col-lg-10">
+                {{ emailform.subject(class="form-control", placeholder="") }}
+                {% for error in emailform.subject.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ emailform.header.label(class="col-lg-2 control-label") }}
+            <div class="col-lg-10">
+                {{ emailform.header(class="form-control", placeholder="") }}
+                {% for error in emailform.header.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ emailform.body.label(class="col-lg-2 control-label") }}
+            <div class="col-lg-10">
+                {{ ckeditor.config(name=emailform.body.name) }} <!-- Initialize CKEditor -->
+                {{ emailform.body(class="form-control", rows="5", cols="20") }}
+                {% for error in emailform.body.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ emailform.footer.label(class="col-lg-2 control-label") }}
+            <div class="col-lg-10">
+                {{ emailform.footer(class="form-control", placeholder="") }}
+                {% for error in emailform.footer.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ emailform.attachment.label(class="col-lg-2 control-label") }}
+            <div class="col-lg-10">
+                {{ emailform.attachment(class="form-control") }}
+                {% for error in emailform.attachment.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Submit</button>
+    </form>
+</div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+            <!-- End Email -->
+        </div>
+        <ul class="inbox-nav inbox-divider">
+            {% if this_campaign.type == 1%}
+            <li class="active">
+                <a href="{{ url_for('courses.dashboard', course=compaign_id) }}"><i class="fa fa-inbox"></i> Templates Created <span class="badge badge-success pull-right m-t-12">
+
+                    {% set num_templates = email_templates|length %}
+                    {% if num_templates > 0 %}
+
+{{ num_templates }}
+{% else %}
+0
+    {% endif %}
+                </span></a>
+            </li>
+            {% endif %}
+            <li class="active">
+                <a href="{{ url_for('courses.users', id=compaign_id) }}"  ><i class="fa fa-envelope-o"></i> Subscribed users
+                    <span class="badge badge-success pull-right m-t-12">
+
+                        {% set num_users = users|length %}
+                        {% if num_users > 0 %}
+
+    {{ num_users }}
+
+        {% endif %}
+                    </span>
+                </a>
+            </li>
+            <li>
+                {% if check_key == None  %}
+                <!-- <a  style="width: auto;height: auto;"> Config</a> -->
+
+                <a href="#configmodal"  data-toggle="modal" title="Compose"><i class="fa fa-wrench"></i>
+                    Config</a>
+                {% else %}
+                <a href="#configmodal"  data-toggle="modal" title="Compose" ><i class="fa fa-edit"></i> Update</a>
+                {% endif %}
+            </li>
+            <li>
+                <a href="#customize"  data-toggle="modal" title="Compose"> <i class="fa fa-cog"></i>
+                    Customize</a>
+            </li>
+            <li>
+                <a href="{{ url_for('courses.resources', campaign=compaign_id) }}" > <i class="fa fa-cog"></i>
+                    Resources</a>
+            </li>
+
+
+        </ul>
+
+
+
+
+    </aside>
+
+
+        {% block content %}{% endblock %}
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-lg-12">
+<div class="footer">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="search">
+<button type="button" class="close">×</button>
+<form>
+<input type="search" value="" placeholder="type keyword(s) here" />
+<button type="submit" class="btn btn-primary">Search</button>
+</form>
+</div>
+
+
+
+
+    <!-- JS -->
+    <!-- Place your JS includes here -->
+    
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="/static/js/lib/jquery.min.js"></script>
+    <script src="/static/js/lib/jquery.nanoscroller.min.js"></script>
+    <script src="/static/js/lib/jquery.nicescroll.min.js"></script>
+    <script src="/static/js/lib/menubar/sidebar.js"></script>
+    <script src="/static/js/lib/preloader/pace.min.js"></script>
+    <script>
+        function showLoading() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+    </script>
+   
+    <script src="/static/js/lib/bootstrap.min.js"></script>
+    <script src="/static/js/scripts.js"></script>
+    <!-- Additional JS specific to the child template -->
+    {% block additional_js %}
+
+
+    {% endblock %}
+</body>
+
+</html>

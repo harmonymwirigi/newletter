@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>nyxmedia/paymentslution </title>
+
+    <!-- ================= Favicon ================== -->
+    <!-- Standard -->
+    <link rel="shortcut icon" href="http://placehold.it/64.png/000/fff">
+    <!-- Retina iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="144x144" href="http://placehold.it/144.png/000/fff">
+    <!-- Retina iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="114x114" href="http://placehold.it/114.png/000/fff">
+    <!-- Standard iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="72x72" href="http://placehold.it/72.png/000/fff">
+    <!-- Standard iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="57x57" href="http://placehold.it/57.png/000/fff">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="/static/css/lib/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/lib/themify-icons.css" rel="stylesheet">
+     <link href="/static/assets/css/lib/menubar/sidebar.css" rel="stylesheet">
+    <link href="/static/css/lib/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/lib/unix.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <style>
+      .video-centered {
+    display: block; /* Ensure the video is a block element */
+    margin: 0 auto; /* Center the video horizontally */
+    width: 100%; /* Ensure the video does not exceed the width of the container */
+    height: auto; /* Maintain the video aspect ratio */
+}
+ .card {
+        background-color: rgba(255, 255, 255, 0.1); /* White background with 80% opacity */
+        border: none; /* Remove border if needed */
+        box-shadow: none; /* Remove box-shadow if needed */
+    }
+
+    .card-header,
+    .card-body {
+        background-color: transparent; /* Make header and body backgrounds transparent */
+    }
+
+    .card-header h4,
+    .card-header p,
+    .card-body p {
+        color: #333; /* Set text color for better contrast against transparency */
+    }
+
+    /* Optional: Style for video and image */
+    .video-centered {
+        margin: auto;
+        display: block;
+        max-width: 100%;
+    }
+
+    /* Optional: Adding rounded corners */
+    .img-rounded {
+        border-radius: 8px;
+    }
+
+
+
+    </style>
+    
+  
+</head>
+
+<body style="background-color: {{ color }};">
+
+    <div class="unix-login">
+        <div class="container">
+            <div class="row">
+                {% if resources %}
+                
+                {% for resource in resources %}
+                {% if resource.position == 'top' %}
+                <div class="col-lg-6 col-lg-offset-3">
+                    <div class="card alert">
+                        <div class="card-header text-center">
+                            <h4>{{ resource.title }}</h4>
+                            <p>{{ resource.course_description }}</p>
+                        </div>
+                        <div class="card-body text-center">
+                            <p class="text-muted">{{ course_description }}</p>
+                            {% if resource.advert %}
+                                {% if resource.advert.endswith('.mp4') %}
+                                    <!-- Display video if the advert is a video file -->
+                                    <video id="video{{ resource.id }}" class="img-rounded img-responsive video-centered" controls>
+                                        <source src="{{ url_for('static', filename='adverts/' + resource.advert) }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                {% else %}
+                                    <!-- Display image if the advert is an image file -->
+                                    <img src="{{ url_for('static', filename='adverts/' + resource.advert) }}" class="img-rounded img-responsive video-centered" alt="Advert">
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                <div class="col-lg-6 col-lg-offset-3">
+                   
+                            
+                       
+                        <div class="login-form">
+                            <h4>{{title}}</h4>
+                            <h4>Registrate</h4>
+                            <form action="{{url_for('auth.register',code = code)}}" method="POST">
+                                {{ form.hidden_tag() }}
+                                
+                                <div class="form-group">
+                                    {{ form.email.label(class="form-label") }}
+                                    {{ form.email(class="form-control", placeholder="Dirección de Email") }}
+                                    {% for error in form.email.errors %}
+                                    <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                             
+                                <div class="form-group form-check">
+                                    {{ form.agree_terms(class="") }}
+                                    <label class="form-check-label"></label><a style="color:blue;" href="{{url_for('auth.termsandconditions')}}">Aceptar términos y condiciones</a>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Registrate</button>
+                            </form>
+                            
+                            
+                        </div>
+                       
+                 
+                   
+                    
+                    
+                </div>
+                {% if resources %}
+                {% for resource in resources %}
+                {% if resource.position == 'bottom' %}
+                <div class="col-lg-6 col-lg-offset-3">
+    <div class="card alert">
+        <div class="card-header text-center">
+            <h4>{{ resource.title }}</h4>
+            <p>{{ resource.course_description }}</p>
+        </div>
+        <div class="card-body text-center">
+            <p class="text-muted m-b-15">{{ course_description }}</p>
+            {% if resource.advert != None  %}
+            {% if resource.advert.endswith('.mp4') %}
+                <!-- Display video if the advert is a video file -->
+                <div class="video-container">
+                    <video class="img-rounded img-responsive video-centered" controls>
+                        <source src="{{ url_for('static', filename='adverts/' + resource.advert) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            {% else %}
+                <!-- Display image if the advert is an image file -->
+                <img src="{{ url_for('static', filename='adverts/' + resource.advert) }}" class="img-rounded img-responsive video-centered" alt="Advert">
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                 
+                
+            </div>
+        </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var videos = document.querySelectorAll('video');
+
+        videos.forEach(function(video) {
+            video.muted = false; // Unmute the video
+            video.play().catch(function(error) {
+                console.log('Autoplay prevented:', error);
+                video.muted = false;
+                video.play(); // Fallback to autoplay with muted sound
+            });
+        });
+    });
+</script>
+
+</body>
+
+</html>

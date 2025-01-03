@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>nyxmedia/payments Admin</title>
+
+    <!-- ================= Favicon ================== -->
+    <!-- Standard -->
+    <link rel="shortcut icon" href="http://placehold.it/64.png/000/fff">
+    <!-- Retina iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="144x144" href="http://placehold.it/144.png/000/fff">
+    <!-- Retina iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="114x114" href="http://placehold.it/114.png/000/fff">
+    <!-- Standard iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="72x72" href="http://placehold.it/72.png/000/fff">
+    <!-- Standard iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="57x57" href="http://placehold.it/57.png/000/fff">
+
+    <!-- Styles -->
+    <link href="/static/css/lib/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/lib/themify-icons.css" rel="stylesheet">
+    <link href="/static/css/lib/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/lib/unix.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <style>
+        .success-icon {
+    border: 2px solid #5cb85c; /* green color */
+    border-radius: 50%; /* make it round */
+    width: 100px; /* adjust width and height as needed */
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto; /* adjust margin as needed */
+}
+
+.success-icon i {
+    font-size: 50px; /* adjust icon size as needed */
+    color: #5cb85c; /* green color */
+}
+.btn-group {
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn-group button {
+            flex: 1;
+            margin: 0 5px;
+        }
+
+
+    </style>
+</head>
+
+<body class="bg-primary">
+
+    <div class="unix-login">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-3">
+                    <div class="login-content">
+                        <div class="login-logo">
+                            <a href="index.html"><span>Nyxmedia</span></a>
+                        </div>
+                        <div class="login-form">
+                            <h4>¿Estás seguro de que deseas dejar de recibir tus actualizaciones? Recuerda que, para que funcione, tienes que ser</h4>
+                            <form class="row" action="{{ url_for('auth.unsubscribe', user=user_id, campaign=campaign) }}" method="POST">
+                                <
+                                <input type="hidden" name="campaign" value={{ campaign }} >
+                                <input type="hidden" name="user" value={{ user_id }} >
+                                <div class="col-12 btn-group mb-3" id="button-group">
+                                    <button type="button" class="btn btn-primary" onclick="hideButtons()">No</button>
+                                    <button type="button" class="btn btn-danger" onclick="showReason()">Si</button>
+                                </div>
+                                <div class="col-12" id="reason-div" style="display:none;">
+                                    <button type="button" class="btn btn-primary mb-3 w-20" onclick="showButtons()">Volver</button>
+                                    <div class="form-group">
+                                        <input class="form-control" name="phone_no" type="text" placeholder="Introduce tu número de teléfono" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" name="name" type="text" placeholder="Introduce tu Nombre" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" name="email" type="email" placeholder="Introduce tu Email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="reason">Razones para dejar de recibir las actualizaciones:</label>
+                                        <textarea class="form-control" id="reason" name="reason" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary w-20">Enviar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+
+        function showReason() {
+            document.getElementById('reason-div').style.display = 'block';
+            hideButtons();
+        }
+
+        function hideButtons() {
+            document.getElementById('button-group').style.display = 'none';
+        }
+
+        function showButtons() {
+            document.getElementById('reason-div').style.display = 'none';
+            document.getElementById('button-group').style.display = 'flex';
+        }
+    </script>
+
+
+</body>
+
+</html>

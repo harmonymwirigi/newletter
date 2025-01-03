@@ -1,0 +1,88 @@
+{% extends "compaignbase.html" %}
+{% block title %}
+    Compose Email
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <!--<div class="card-header bg-primary text-white">-->
+                <!--    <h4 class="mb-0">Compose Your Email</h4>-->
+                <!--</div>-->
+                <div class="card-body">
+                    <!-- Form for sending and editing email -->
+                    <form action="{{ url_for('courses.sendeditedemail', compaign=active_compaign_id) }}" method="POST" enctype="multipart/form-data">
+                        <!-- Email Editor (Only One CKEditor for Full Email) -->
+                        <div class="form-group mb-3">
+                            <label for="emailContent"><strong>Edit Your Email</strong></label>
+                            <textarea id="emailContent" name="emailContent" class="form-control ckeditor" rows="15">
+                                <h2>{{ header }}</h2>
+                                <p>{{ body }}</p>
+                                <footer><p>{{ footer }}</p></footer>
+                            </textarea>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Send Email</button>
+                            <button type="button" class="btn btn-secondary" onclick="regenerateEmail()">Regenerate Email</button>
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#emailPreviewModal" onclick="previewEmail()">Preview Email</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Email Preview -->
+<div class="modal fade" id="emailPreviewModal" tabindex="-1" aria-labelledby="emailPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emailPreviewModalLabel">Email Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="emailPreviewContent" style="max-height: 70vh; overflow-y: auto;">
+                <!-- Email content will be injected here by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block additional_js %}
+
+<script>
+    // Initialize CKEditor
+    CKEDITOR.replace('emailContent', {
+        removePlugins: 'resize',
+        height: 'auto',
+        resize_enabled: false
+    });
+
+    // Function to regenerate the email content
+    function regenerateEmail() {
+        alert('Email content regenerated!');
+        location.reload();  // Example of page reload to regenerate content
+    }
+
+    // Function to preview the email content in the modal
+    function previewEmail() {
+        // Get the email content from CKEditor
+        var emailContent = CKEDITOR.instances['emailContent'].getData();
+
+        // Inject the email content into the modal's body
+        document.getElementById('emailPreviewContent').innerHTML = emailContent;
+    }
+</script>
+
+<!-- Bootstrap 5 CSS and JS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock additional_js %}

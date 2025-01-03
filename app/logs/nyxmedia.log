@@ -1,0 +1,113 @@
+2024-07-25 22:39:29,561 ERROR: Exception on /compaign/1 [GET] [in /home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py:828]
+Traceback (most recent call last):
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "/home/g304975/nyxmediaa/course/route.py", line 154, in dashboard
+    return render_template('compaigndashboard.html',
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/jinja2/environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/jinja2/environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/g304975/nyxmediaa/templates/compaigndashboard.html", line 2, in top-level template code
+    {% extends "compaignbase.html" %}
+  File "/home/g304975/nyxmediaa/templates/compaignbase.html", line 332, in top-level template code
+    <form action="{{ url_for('courses.sendemail', compaign=compaign_id) }}" method="POST" enctype="multipart/form-data">
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 1074, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 1063, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/werkzeug/routing/map.py", line 919, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'courses.sendemail' with values ['campaign']. Did you forget to specify values ['compaign']?
+2024-07-25 22:39:30,806 ERROR: Exception on /compaign/1 [GET] [in /home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py:828]
+Traceback (most recent call last):
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "/home/g304975/nyxmediaa/course/route.py", line 154, in dashboard
+    return render_template('compaigndashboard.html',
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/jinja2/environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/jinja2/environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/g304975/nyxmediaa/templates/compaigndashboard.html", line 2, in top-level template code
+    {% extends "compaignbase.html" %}
+  File "/home/g304975/nyxmediaa/templates/compaignbase.html", line 332, in top-level template code
+    <form action="{{ url_for('courses.sendemail', compaign=compaign_id) }}" method="POST" enctype="multipart/form-data">
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 1074, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 1063, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/werkzeug/routing/map.py", line 919, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'courses.sendemail' with values ['campaign']. Did you forget to specify values ['compaign']?
+2024-07-25 22:41:27,009 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-25 22:41:27,016 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-25 22:59:20,881 ERROR: Exception on /compaign/send_email/1 [POST] [in /home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py:828]
+Traceback (most recent call last):
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "/home/g304975/nyxmediaa/course/route.py", line 259, in sendemail
+    attachment_path = None
+NameError: name 'secure_filename' is not defined
+2024-07-25 23:00:33,764 ERROR: Exception on /compaign/send_email/1 [POST] [in /home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py:828]
+Traceback (most recent call last):
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "/home/g304975/nyxmediaa/course/route.py", line 259, in sendemail
+    attachment = form.attachment.data
+NameError: name 'secure_filename' is not defined
+2024-07-25 23:01:08,824 ERROR: Exception on /compaign/send_email/1 [POST] [in /home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py:828]
+Traceback (most recent call last):
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "/home/g304975/nyxmediaa/course/route.py", line 259, in sendemail
+    attachment = form.attachment.data
+NameError: name 'secure_filename' is not defined

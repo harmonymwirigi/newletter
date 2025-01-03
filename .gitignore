@@ -1,0 +1,6 @@
+venv/
+.well-known/
+__pycache__/
+adverts/
+redis-7.0.12/
+tmp/

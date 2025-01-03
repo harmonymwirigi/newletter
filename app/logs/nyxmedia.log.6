@@ -1,0 +1,111 @@
+2024-07-22 12:57:16,013 ERROR: Exception on /users/dashboard [GET] [in /home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py:828]
+Traceback (most recent call last):
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "/home/g304975/nyxmediaa/user/route.py", line 51, in dashboard
+    print(courses)
+UnicodeEncodeError: 'ascii' codec can't encode character '\xe9' in position 89: ordinal not in range(128)
+2024-07-22 12:59:01,184 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 12:59:01,187 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 13:00:10,396 ERROR: Exception on /auth/register/c9dc1d30 [GET] [in /home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py:828]
+Traceback (most recent call last):
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/g304975/nyxmediaa/auth/route.py", line 464, in register
+    amount = int(round(price * 100))  # Ensure amount is an integer
+TypeError: unsupported operand type(s) for *: 'NoneType' and 'int'
+2024-07-22 14:38:45,681 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 14:38:45,684 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 15:25:56,810 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 15:25:56,816 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 15:59:37,171 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 15:59:37,174 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 16:38:01,979 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 16:38:01,983 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 16:56:20,465 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 16:56:20,467 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 17:27:17,070 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 17:27:17,073 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 18:00:22,034 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 18:00:22,039 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 18:30:34,879 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 18:30:34,884 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 18:36:11,368 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 18:36:11,371 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 18:46:53,386 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 18:46:53,389 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 19:41:19,422 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 19:41:19,427 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 19:45:49,880 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 19:45:49,884 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 22:04:15,252 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 22:04:15,256 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 22:08:15,778 ERROR: Exception on /auth/register/8b92ac1c [GET] [in /home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py:828]
+Traceback (most recent call last):
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/g304975/nyxmediaa/auth/route.py", line 464, in register
+    amount = int(round(price * 100))  # Ensure amount is an integer
+TypeError: unsupported operand type(s) for *: 'NoneType' and 'int'
+2024-07-22 22:08:18,793 ERROR: Exception on /auth/register/8b92ac1c [GET] [in /home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py:828]
+Traceback (most recent call last):
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/g304975/virtualenv/nyxmediaa/3.10/lib/python3.10/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/g304975/nyxmediaa/auth/route.py", line 464, in register
+    amount = int(round(price * 100))  # Ensure amount is an integer
+TypeError: unsupported operand type(s) for *: 'NoneType' and 'int'
+2024-07-22 22:39:18,845 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 22:39:18,849 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-22 23:09:02,820 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-22 23:09:02,823 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-23 01:07:55,233 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-23 01:07:55,238 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-23 02:15:34,920 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-23 02:15:34,924 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-23 02:35:38,369 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-23 02:35:38,373 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-23 03:15:49,628 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-23 03:15:49,632 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-23 07:00:06,765 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-23 07:00:06,769 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-23 07:38:05,017 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-23 07:38:05,022 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-23 08:15:17,542 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-23 08:15:17,548 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-23 08:32:55,148 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-23 08:32:55,151 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-23 08:36:43,589 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-23 08:36:43,592 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-23 09:12:34,206 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-23 09:12:34,209 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-23 09:28:12,245 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-23 09:28:12,248 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-23 09:42:38,499 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]
+2024-07-23 09:42:38,502 INFO: Database connection successful. [in /home/g304975/nyxmediaa/server.py:94]
+2024-07-23 10:13:21,477 INFO: Nyx Media startup [in /home/g304975/nyxmediaa/server.py:81]

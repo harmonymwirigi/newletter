@@ -1,0 +1,85 @@
+<!-- dashboard.html -->
+{% extends "compaignbase.html" %}
+{% block title %}
+    Admin Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="content-wrap">
+        <div class="main">
+            <div class="container-fluid">
+                
+                <!-- /# row -->
+                <div id="main-content">
+                    <div class="row">
+                    <div class="col-lg-8 p-r-0 title-margin-right">
+                        <div class="page-header">
+                            <div class="page-title">
+                                {% if this_campaign.price is none and this_campaign.title is none  %}
+                                    <p class="text-warning">The link will appear after customization</p>
+                                {% else %}
+                                    <a href="https://nyxmedia.es/register/{{ url }}" target="_blank">
+                                        https://nyxmedia.es/register/{{ url }}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /# column -->
+                    <div class="col-lg-4 p-l-0 title-margin-left">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <ol class="breadcrumb text-right">
+                                    <a class="btn btn-primary" href="#resource"  data-toggle="modal">Add Resource</a>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /# column -->
+                </div>
+                    <div class="row">
+                        {% if resources %}
+                        {% for resource in resources %}
+                        <div class="col-lg-3 m-2" style="background-color:#dcdcda;">
+                            <div class="card alert">
+                                <div class="card-header">
+                                    <h4>{{resource.title}}</h4>
+                                    
+                                
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-muted m-b-15">{{resource.course_description}}</p>
+                                    {% if resource.advert != None %}
+                                    {% if resource.advert.endswith('.mp4') %}
+                                    <!-- Display video if the advert is a video file -->
+                                    <video class="img-rounded img-responsive" controls >
+                                        <source src="{{ url_for('static', filename='adverts/' + resource.advert) }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                {% else %}
+                                    <!-- Display image if the advert is an image file -->
+                                    <img src="{{ url_for('static', filename='adverts/' + resource.advert) }}"  class="img-responsive" alt="Advert" >
+                                {% endif %}
+                                {% endif %}
+                                <form  method="post" action="{{ url_for('courses.delete_resource', resource=resource.id) }}">
+                                        {{ delete_resource.hidden_tag() }}
+                                       
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        
+                    </div>
+                    <!-- /# row -->
+                  
+                    <!-- /# row -->
+
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
