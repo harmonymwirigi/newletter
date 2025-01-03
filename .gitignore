@@ -4,3 +4,13 @@ __pycache__/
 adverts/
 redis-7.0.12/
 tmp/
+*.log
+stderr.log
+__pycache__/
+*.pyc
+.env
+*.env
+redis-stable/
+redis-stable.tar.gz
+.htaccess
+passenger_wsgi.py
