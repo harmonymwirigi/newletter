@@ -14,4 +14,3 @@ redis-stable/
 redis-stable.tar.gz
 .htaccess
 passenger_wsgi.py
-.htaccess
